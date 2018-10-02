@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SCOSEntry</string>
+    <string name="order_dish">点菜</string>
+    <string name="check_order">查看订单</string>
+    <string name="login_register">登录/注册</string>
+    <string name="system_help">系统帮助</string>
+
+    <string name="login_name_label">登录名</string>
+    <string name="login_passwd_label">登录密码</string>
+    <string name="login">登录</string>
+    <string name="go_back">返回</string>
+</resources>

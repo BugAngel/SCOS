@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginOrRegister"
+    android:padding="15dip"
+    android:layout_margin="15dip">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:text="@string/login_name_label"
+        android:id="@+id/login_user_input" />
+
+    <EditText
+        android:id="@+id/username_edit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/login_name_label"
+        android:layout_below="@+id/login_user_input"
+        android:singleLine="true"
+        android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/login_passwd_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username_edit"
+        android:layout_marginTop="3dp"
+        android:text="@string/login_passwd_label"/>
+
+    <EditText
+        android:id="@+id/passwd_edit"
+        android:hint="@string/login_passwd_label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_passwd_input"
+        android:singleLine="true"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_button"
+        android:layout_below="@id/passwd_edit"
+        android:layout_alignRight="@id/passwd_edit"
+        android:layout_alignEnd="@+id/passwd_edit"
+        android:text="@string/login"
+        android:onClick="onLogin"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/go_back_button"
+        android:layout_below="@id/passwd_edit"
+        android:layout_alignLeft="@id/passwd_edit"
+        android:layout_alignStart="@id/passwd_edit"
+        android:text="@string/go_back"
+        android:onClick="onGoBack"/>
+
+    <ProgressBar
+        android:id="@+id/login_progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="332dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:max="200"
+        android:progress="0" />
+
+
+
+</RelativeLayout >
