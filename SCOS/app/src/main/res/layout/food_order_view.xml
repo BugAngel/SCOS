@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    tools:context=".FoodOrderView"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/t2_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/chocolate"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/darkred"
+        app:tabTextColor="@color/midnightblue"
+        android:layout_weight="1"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/t2_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom|center"
+        android:layout_weight="9"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom|center"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/dishes_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/dishes_sum_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/dishes_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/darkgreen"
+            android:textColor="@color/white"
+            android:onClick="onInvoicing"/>
+
+    </LinearLayout>
+
+</LinearLayout>

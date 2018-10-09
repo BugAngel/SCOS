@@ -5,51 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainScreen">
-    <!--登录/注册按钮-->
-    <Button
-        android:layout_width="110dp"
-        android:layout_height="90dp"
-        android:id="@+id/login_register_btn"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:drawableTop="@drawable/login_register_btn"
-        android:gravity="top|center_vertical"
-        android:text="@string/login_register"
-        android:onClick="onLoginRegister"/>
 
-    <!--查看订单按钮-->
-    <Button
-        android:layout_width="110dp"
-        android:layout_height="90dp"
-        android:id="@+id/check_order_btn"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:drawableTop="@drawable/check_order_btn"
-        android:gravity="top|center_vertical"
-        android:text="@string/check_order"/>
+    <GridView
+        android:id="@+id/grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:verticalSpacing="4dip"
+        android:horizontalSpacing="4dip"
+        android:columnWidth="120dip"
+        android:gravity="center" />
 
-    <!--点菜按钮-->
-    <Button
-        android:layout_width="70dp"
-        android:layout_height="90dp"
-        android:id="@+id/order_dish_btn"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:drawableTop="@drawable/order_dish_btn"
-        android:gravity="top|center_vertical"
-        android:text="@string/order_dish"/>
-
-    <!--系统帮助按钮-->
-    <Button
-        android:layout_width="110dp"
-        android:layout_height="90dp"
-        android:id="@+id/system_help_btn"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:drawableTop="@drawable/system_help_btn"
-        android:gravity="top|center_vertical"
-        android:text="@string/system_help"/>
 </RelativeLayout>

@@ -11,13 +11,16 @@ import android.widget.ProgressBar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.source.code.model.User;
+
 public class LoginOrRegister extends Activity {
 
     private int progress = 0;
     private ProgressBar pb;
     private Timer timer;
     private TimerTask timerTask;
-    private boolean login_flag=false;
+    private String username;
+    private String passwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,22 +30,19 @@ public class LoginOrRegister extends Activity {
     }
 
     public void onLogin(View v){
-        EditText username_edit;
-        EditText passwd_edit;
-
         startTimer();
-        //验证登录名和登录密码是否符合规则
-        username_edit= findViewById(R.id.username_edit);
-        passwd_edit=findViewById(R.id.passwd_edit);
-        String username=username_edit.getText().toString();
-        String passwd=passwd_edit.getText().toString();
-        String regex = "[A-Za-z0-9]+";
-        if(username.matches(regex) && passwd.matches(regex)){
-            login_flag=true;
-        }else if(!username.matches(regex)){
-            username_edit.setError("输入内容不符合规则");
-        }else{
-            passwd_edit.setError("输入内容不符合规则");
+
+        if(checkUsernamePassword()){
+            User loginUser=new User();
+            loginUser.setUserName(username);
+            loginUser.setPassword(passwd);
+            loginUser.setOldUser(true);
+
+            String data ="LoginSuccess";
+            Intent intent=new Intent(LoginOrRegister.this, MainScreen.class);
+            intent.putExtra("LoginSuccess",data);
+            intent.putExtra("user",loginUser);
+            startActivity(intent);
         }
     }
 
@@ -84,11 +84,40 @@ public class LoginOrRegister extends Activity {
         timerTask=null;
         timer=null;
         pb.setVisibility(View.INVISIBLE);
-        if(login_flag){
-            String data ="LoginSuccess";
+    }
+
+    public void onRegister(View v){
+        if(checkUsernamePassword()){
+            User loginUser=new User();
+            loginUser.setUserName(username);
+            loginUser.setPassword(passwd);
+            loginUser.setOldUser(false);
+
+            String data ="RegisterSuccess";
             Intent intent=new Intent(LoginOrRegister.this, MainScreen.class);
-            intent.putExtra("LoginSuccess",data);
+            intent.putExtra("RegisterSuccess",data);
+            intent.putExtra("user",loginUser);
             startActivity(intent);
         }
+    }
+
+    //验证登录名和登录密码是否符合规则
+    private boolean checkUsernamePassword(){
+        EditText username_edit;
+        EditText passwd_edit;
+
+        username_edit= findViewById(R.id.username_edit);
+        passwd_edit=findViewById(R.id.passwd_edit);
+        username=username_edit.getText().toString();
+        passwd=passwd_edit.getText().toString();
+        String regex = "[A-Za-z0-9]+";
+        if(username.matches(regex) && passwd.matches(regex)){
+            return true;
+        }else if(!username.matches(regex)){
+            username_edit.setError("输入内容不符合规则");
+        }else{
+            passwd_edit.setError("输入内容不符合规则");
+        }
+        return false;
     }
 }

@@ -8,5 +8,16 @@
     <string name="login_name_label">登录名</string>
     <string name="login_passwd_label">登录密码</string>
     <string name="login">登录</string>
+    <string name="register">注册</string>
     <string name="go_back">返回</string>
+
+    <string name="return_dish">退点</string>
+
+    <string name="ordered_dish">已点菜品</string>
+    <string name="call_service">呼叫服务</string>
+
+    <string name="dishes_num">菜品总数：%1$d</string>
+    <string name="dishes_sum_price">订单总价：%1$.2f元</string>
+
+    <string name="dish_note">备注</string>
 </resources>

@@ -51,7 +51,10 @@
         android:layout_alignRight="@id/passwd_edit"
         android:layout_alignEnd="@+id/passwd_edit"
         android:text="@string/login"
-        android:onClick="onLogin"/>
+        android:textSize="20sp"
+        android:onClick="onLogin"
+        android:textColor="@color/white"
+        android:background="@color/darkgreen"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -61,7 +64,22 @@
         android:layout_alignLeft="@id/passwd_edit"
         android:layout_alignStart="@id/passwd_edit"
         android:text="@string/go_back"
-        android:onClick="onGoBack"/>
+        android:textSize="20sp"
+        android:onClick="onGoBack"
+        android:textColor="@color/white"
+        android:background="@color/darkgreen"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/register_button"
+        android:layout_below="@id/passwd_edit"
+        android:layout_centerHorizontal="true"
+        android:text="@string/register"
+        android:textSize="20sp"
+        android:onClick="onRegister"
+        android:textColor="@color/white"
+        android:background="@color/darkgreen"/>
 
     <ProgressBar
         android:id="@+id/login_progressbar"
@@ -71,7 +89,5 @@
         android:layout_centerVertical="true"
         android:max="200"
         android:progress="0" />
-
-
 
 </RelativeLayout >
