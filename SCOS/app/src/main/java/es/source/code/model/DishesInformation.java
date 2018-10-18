@@ -18,7 +18,7 @@ public class DishesInformation {
             {"酱牛肉","酸辣凤爪","老醋木耳"},
             {"鱼香肉丝", "冒菜", "牛肉干锅"},
             {"螃蟹", "鲍鱼", "龙虾"},
-            {"茅台", "五粮液 ", "天之蓝 "}
+            {"茅台", "五粮液", "天之蓝"}
     };
 
     private int[][] dishes_img={
@@ -46,6 +46,13 @@ public class DishesInformation {
         dishesInformation=this;
     }
 
+    public void orderDishes(){
+        for(int i=0;i<DISH_SORT;i++){
+            for(int j=0;j<DISH_MAX_NUM;j++){
+                ordered_dishes_num[i][j]=0;
+            }
+        }
+    }
     public void setOrder_position(int order_position) {
         this.order_position = order_position;
     }

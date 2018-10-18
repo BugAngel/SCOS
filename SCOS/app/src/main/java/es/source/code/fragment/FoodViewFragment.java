@@ -64,7 +64,7 @@ public class FoodViewFragment extends Fragment {
      * 获得相应菜品信息
      */
     private ArrayList getDishesData(int position) {
-        ArrayList list = new ArrayList<>();
+        ArrayList<FoodItem> list = new ArrayList<FoodItem>();
 
         for (int i=0; i<dishesInformation.getDISH_MAX_NUM(); i++) {
             FoodItem item=new FoodItem(dishes_name[position][i],dishes_price[position][i]);

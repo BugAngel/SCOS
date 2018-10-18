@@ -16,17 +16,15 @@ import es.source.code.activity.R;
 import es.source.code.model.GridItem;
 import es.source.code.utils.ScreenUtils;
 
-public class MainScreenAdapter extends BaseAdapter {
+public class SCOSHelperAdapter extends BaseAdapter {
     private ArrayList fList;
     private Context context;
-    private ViewHolder vh; // 全局的ViewHolder引用
-    private int item_height;
+    private SCOSHelperAdapter.ViewHolder vh; // 全局的ViewHolder引用
 
-    public MainScreenAdapter(Context context, ArrayList list,int item_height) {
+    public SCOSHelperAdapter(Context context, ArrayList list) {
         super();
         this.context = context;
         this.fList=list;
-        this.item_height=item_height;
     }
     @Override
     public int getCount() {
@@ -44,39 +42,43 @@ public class MainScreenAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
-        GridItem gridItem=(GridItem)fList.get(position);
+    public View getView(int position, View convertView, ViewGroup parent) {
+        GridItem gridItem = (GridItem) fList.get(position);
         int screenWidth = ScreenUtils.getScreenWidth(context);
         int screenHeight = ScreenUtils.getScreenHeight(context);
-        int viewWidth = screenWidth/2;
-        int viewHeight = screenHeight/item_height;
+        int viewWidth = screenWidth / 2;
+        int viewHeight = screenHeight / 3;
 
-        if(convertView ==null) {
-            vh = new ViewHolder();
+        if (convertView == null) {
+            vh = new SCOSHelperAdapter.ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_item, null);
             vh.name = convertView.findViewById(R.id.item_text);
             vh.image = convertView.findViewById(R.id.item_image);
-            vh.relativeLayout=convertView.findViewById(R.id.grid_item);
+            vh.relativeLayout = convertView.findViewById(R.id.grid_item);
 
             vh.name.setText(gridItem.getName());
             vh.image.setImageResource(gridItem.getImage());
-            if(position==0){
+            if (position == 0) {
                 vh.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.yellow));
-            }else if(position==1){
+            } else if (position == 1) {
                 vh.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.orange));
-            }else if(position==2){
+            } else if (position == 2) {
                 vh.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.lightblue));
-            }else {
+            } else if (position == 3) {
                 vh.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.greenyellow));
+            } else {
+                vh.relativeLayout.setBackgroundColor(context.getResources().getColor(R.color.ivory));
             }
             AbsListView.LayoutParams lp = new AbsListView.LayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, 50));
             lp.width = viewWidth;
             lp.height = viewHeight;
             convertView.setLayoutParams(lp);
             convertView.setTag(vh);
+
         } else {
-            vh = (ViewHolder) convertView.getTag();
+            vh = (SCOSHelperAdapter.ViewHolder) convertView.getTag();
         }
+
         return convertView;
     }
 

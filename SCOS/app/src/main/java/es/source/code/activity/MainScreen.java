@@ -1,7 +1,9 @@
 package es.source.code.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +25,7 @@ import static java.security.AccessController.getContext;
 
 public class MainScreen extends Activity implements AdapterView.OnItemClickListener{
     private String[] mainscreen_name= new String[]{
-            "登录/注册","系统帮助","点菜", "查看订单",
+            "登录/注册","系统帮助","点菜", "查看订单"
     };//选项名
 
     private int[] mainscreen_image=new int[]{
@@ -44,6 +46,9 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
 
         Intent intent = this.getIntent();
         String nameString;
+        //获取sharedPreferences对象
+        SharedPreferences sharedPreferences = getSharedPreferences("WRSCOS", Context.MODE_PRIVATE);
+        int loginState = sharedPreferences.getInt("loginState", 0);
 
         /*默认全部显示*/
         mGridView = findViewById(R.id.grid_view);
@@ -51,10 +56,8 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
 
         /*intent判断入口界面传值*/
         nameString = intent.getStringExtra("FromEntry");
-        if(nameString!=null){
-            if(!nameString.equals("FromEntry")){
-                showLess();
-            }
+        if(loginState==0){
+            showLess();
         }
 
         /*intent判断登录成功传值*/
@@ -82,7 +85,7 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
      * 获取GridView的数据
      */
     private ArrayList getGridViewData() {
-        ArrayList list = new ArrayList<>();
+        ArrayList<GridItem> list = new ArrayList<GridItem>();
 
         for (int i=0; i<mainscreen_name.length; i++) {
             GridItem item=new GridItem(mainscreen_image[i],mainscreen_name[i]);
@@ -96,7 +99,7 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
      * 获取隐藏点菜和查看订单的GridView的数据
      */
     private ArrayList getLessGridViewData() {
-        ArrayList list = new ArrayList<>();
+        ArrayList<GridItem> list = new ArrayList<GridItem>();
 
         for (int i=0; i<LESS_SHOW+1; i++) {
             GridItem item=new GridItem(mainscreen_image[i],mainscreen_name[i]);
@@ -151,6 +154,12 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
 
         if (item.getName().equals("查看订单")) {
             Intent intent=new Intent(MainScreen.this, FoodOrderView.class);
+            intent.putExtra("user",user);
+            startActivity(intent);
+        }
+
+        if (item.getName().equals("系统帮助")) {
+            Intent intent=new Intent(MainScreen.this, SCOSHelper.class);
             intent.putExtra("user",user);
             startActivity(intent);
         }

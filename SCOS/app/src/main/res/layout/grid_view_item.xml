@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:src="@drawable/scos_help_message"
         android:scaleType="fitXY"/>
 
     <TextView
@@ -19,5 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_image"
         android:layout_centerHorizontal="true"
+        android:text="@string/call_service"
         android:textSize="20sp"/>
 </RelativeLayout>

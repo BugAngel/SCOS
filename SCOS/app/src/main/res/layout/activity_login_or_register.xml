@@ -48,7 +48,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/login_button"
         android:layout_below="@id/passwd_edit"
-        android:layout_alignRight="@id/passwd_edit"
         android:layout_alignEnd="@+id/passwd_edit"
         android:text="@string/login"
         android:textSize="20sp"
@@ -80,14 +79,5 @@
         android:onClick="onRegister"
         android:textColor="@color/white"
         android:background="@color/darkgreen"/>
-
-    <ProgressBar
-        android:id="@+id/login_progressbar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="332dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:max="200"
-        android:progress="0" />
 
 </RelativeLayout >

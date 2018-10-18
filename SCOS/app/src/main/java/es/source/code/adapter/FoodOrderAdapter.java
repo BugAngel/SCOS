@@ -59,14 +59,14 @@ public class FoodOrderAdapter extends BaseAdapter {
         FoodItem foodItem=(FoodItem)fList.get(position);
         if(fragment==0){ //已点菜
                 vh.food_name.setText(foodItem.getName());
-                vh.food_price.setText(String.valueOf(foodItem.getPrice()));
+                vh.food_price.setText(String.valueOf(foodItem.getPrice())+"元");
                 vh.food_num.setText(String.valueOf(foodItem.getOrderedNum()));
                 vh.food_note.setText(foodItem.getOrderedNote());
                 vh.btn.setVisibility(View.INVISIBLE);
         }else
         {
                 vh.food_name.setText(foodItem.getName());
-                vh.food_price.setText(String.valueOf(foodItem.getPrice()));
+                vh.food_price.setText(String.valueOf(foodItem.getPrice())+"元");
                 vh.food_num.setText(String.valueOf(foodItem.getUnorderedNum()));
                 vh.food_note.setText(foodItem.getUnorderedNote());
         }
