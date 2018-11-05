@@ -8,20 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import es.source.code.activity.FoodDetailed;
 import es.source.code.activity.FoodView;
 import es.source.code.adapter.FoodAdapter;
-import es.source.code.model.DishesInformation;
 import es.source.code.model.FoodItem;
+import es.source.code.utils.Global;
 
 public class FoodViewFragment extends Fragment {
-    DishesInformation dishesInformation=DishesInformation.getInstance();
-    private String [][] dishes_name=dishesInformation.getDishes_name();
-    private double[][] dishes_price=dishesInformation.getDishes_price();
 
     private int position=0;
     private FoodView activity;
@@ -34,28 +31,33 @@ public class FoodViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         ListView listView;
-        FoodAdapter foodItems=null;
+        FoodAdapter foodAdapter=null;
         activity = (FoodView) getActivity();
         listView = new ListView(activity);
 
         if(activity!=null) {
-            foodItems=new FoodAdapter(getContext(),getDishesData(position),position);
+            foodAdapter=new FoodAdapter(getContext(),getDishesData(position));
         }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // position是当前item在listview中适配器里的位置
+            // id是当前item在listview里的第几行的位置
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int pos=0;
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Intent intent = new Intent(getActivity(), FoodDetailed.class);
-                for (int temp=0;temp<position;temp++) {
-                    pos += dishes_name[temp].length;
+
+                FoodItem foodItem=(FoodItem)getDishesData(position).get(pos);
+                for(int i = 0;i < Global.foodInformation.size(); i ++){
+                    if(foodItem.getName().equals(Global.foodInformation.get(i).getName())){
+                        Global.FOOD_DETAIL_CURRENT_ITEM=i;
+                        break;
+                    }
                 }
-                dishesInformation.setDetail_position(pos+i);
                 startActivity(intent);
             }
         });
 
-        listView.setAdapter(foodItems);
+        listView.setAdapter(foodAdapter);
         return listView;
     }
 
@@ -66,9 +68,10 @@ public class FoodViewFragment extends Fragment {
     private ArrayList getDishesData(int position) {
         ArrayList<FoodItem> list = new ArrayList<FoodItem>();
 
-        for (int i=0; i<dishesInformation.getDISH_MAX_NUM(); i++) {
-            FoodItem item=new FoodItem(dishes_name[position][i],dishes_price[position][i]);
-            list.add(item);
+        for (FoodItem foodItem : Global.foodInformation) {
+            if(foodItem.getSort()==position){
+                list.add(foodItem);
+            }
         }
 
         return list;

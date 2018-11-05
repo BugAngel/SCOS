@@ -5,16 +5,19 @@
     <permission
         android:name="scos.permission.ACCESSSCOS"
         android:protectionLevel="dangerous" />
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:icon="@drawable/icon">
+        android:process="es.source.code">
         <activity android:name=".SCOSEntry">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,20 +28,33 @@
         <activity
             android:name=".MainScreen"
             android:exported="true"
-            android:permission="scos.permission.ACCESSSCOS">
-            <intent-filter>
-                <action android:name="scos.intent.action.SCOSMAIN" />
-
-                <category android:name="scos.intent.category.SCOSLAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:permission="scos.permission.ACCESSSCOS" />
         <activity android:name=".LoginOrRegister" />
         <activity android:name=".FoodView" />
         <activity android:name=".FoodOrderView" />
         <activity android:name=".FoodDetailed" />
-        <activity android:name=".SCOSHelper">
+        <activity android:name=".SCOSHelper" />
 
-        </activity>
+        <service
+            android:name="es.source.code.service.ServerObserverService"
+            android:enabled="true"
+            android:exported="true"
+            android:process="es.source.code"/>
+        <!--EventBus无法完成下面要求，Message和handle模式可以进行处理-->
+            <!--android:process="es.source.code.observerservice" />-->
+
+        <service
+            android:name="es.source.code.service.UpdateService"
+            android:exported="false" />
+
+        <receiver
+            android:name="es.source.code.br.DeviceStartedListener"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

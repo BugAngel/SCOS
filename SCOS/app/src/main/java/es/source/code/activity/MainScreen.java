@@ -20,6 +20,7 @@ import java.util.List;
 import es.source.code.adapter.MainScreenAdapter;
 import es.source.code.model.GridItem;
 import es.source.code.model.User;
+import es.source.code.service.UpdateService;
 
 import static java.security.AccessController.getContext;
 
@@ -75,7 +76,7 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
             if(nameString.equals("RegisterSuccess")){
                 showAll();
 
-                Toast.makeText(this.getApplicationContext(), "欢迎您成为 SCOS 新用户", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "欢迎您成为 SCOS 新用户", Toast.LENGTH_SHORT).show();
                 user = (User)getIntent().getSerializableExtra("user");
             }
         }
@@ -141,24 +142,24 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
 
         Toast.makeText(this.getApplicationContext(), "You Select "+item.getName(), Toast.LENGTH_SHORT).show();
 
-        if (item.getName().equals("登录/注册")) {
+        if (item.getName().equals(mainscreen_name[0])) {
             Intent intent=new Intent(MainScreen.this, LoginOrRegister.class);
             startActivity(intent);
         }
 
-        if (item.getName().equals("点菜")) {
+        if (item.getName().equals(mainscreen_name[2])) {
             Intent intent=new Intent(MainScreen.this, FoodView.class);
             intent.putExtra("user",user);
             startActivity(intent);
         }
 
-        if (item.getName().equals("查看订单")) {
+        if (item.getName().equals(mainscreen_name[3])) {
             Intent intent=new Intent(MainScreen.this, FoodOrderView.class);
             intent.putExtra("user",user);
             startActivity(intent);
         }
 
-        if (item.getName().equals("系统帮助")) {
+        if (item.getName().equals(mainscreen_name[1])) {
             Intent intent=new Intent(MainScreen.this, SCOSHelper.class);
             intent.putExtra("user",user);
             startActivity(intent);

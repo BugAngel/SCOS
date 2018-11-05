@@ -10,8 +10,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import es.source.code.activity.R;
-import es.source.code.model.DishesInformation;
+import es.source.code.model.FoodItem;
+import es.source.code.utils.Global;
 
 public class FoodDetailedFragment extends Fragment {
     private int position=0;
@@ -24,12 +27,7 @@ public class FoodDetailedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        DishesInformation dishesInformation=DishesInformation.getInstance();
-        int dishes_img[]=dishesInformation.getDishesImgTo1D();
-        String dishes_name[]=dishesInformation.getDishNameTo1D();
-        double dishes_price[]=dishesInformation.getDishPriceTo1D();
-        int unordered_dishes_num[]=dishesInformation.getUnOrderedDishesNumTo1D();
-//        position=dishesInformation.getDetail_position();
+        FoodItem foodItem=Global.foodInformation.get(position);
 
         vh = new FoodDetailedFragment.ViewHolder();
         View convertView=LayoutInflater.from(getContext()).inflate(R.layout.food_detailed_item, null);
@@ -39,10 +37,10 @@ public class FoodDetailedFragment extends Fragment {
         vh.food_note=convertView.findViewById(R.id.dish_note);
         vh.btn = convertView.findViewById(R.id.dish_btn);
 
-        vh.food_image.setImageResource(dishes_img[position]);
-        vh.food_name.setText(dishes_name[position]);
-        vh.food_price.setText(String.valueOf(dishes_price[position]));
-        if(unordered_dishes_num[position]>0){
+        vh.food_image.setImageResource(foodItem.getImage());
+        vh.food_name.setText(foodItem.getName());
+        vh.food_price.setText(String.valueOf(foodItem.getPrice()));
+        if(foodItem.getUnorderedNum()>0){
             vh.btn.setText("退点");//已点菜
             vh.btn.setBackgroundColor(getContext().getResources().getColor(R.color.red));
         }else{

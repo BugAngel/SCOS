@@ -1,25 +1,24 @@
 package es.source.code.model;
 
 public class FoodItem {
-    private String name;
-    private double price;
+    private String name;//菜名
+    private double price;//价格
+    private int image;//图片
+    private int sort;//菜品种类 0 冷菜 1 热菜 2 海鲜 3 酒水
+    private int store=0;//库存数量
     private int ordered_num=0;//已点数量
     private int unordered_num=0;//未点数量
-    private String ordered_note=null;//已点备注
-    private String unordered_note=null;//未点备注
+    private String note=null;//备注
 
-    public FoodItem(String name, double price) {
+    public FoodItem(String name, double price, int image, int sort, int store, int ordered_num, int unordered_num, String note) {
         this.name = name;
         this.price = price;
-    }
-
-    public FoodItem(String name, double price,int ordered_num,int unordered_num,String note,String unordered_note) {
-        this.name = name;
-        this.price = price;
+        this.image=image;
+        this.sort=sort;
+        this.store=store;
         this.ordered_num = ordered_num;
         this.unordered_num = unordered_num;
-        this.ordered_note = note;
-        this.unordered_note = unordered_note;
+        this.note = note;
     }
 
     public void setName(String name) {
@@ -30,6 +29,10 @@ public class FoodItem {
         this.price = price;
     }
 
+    public void setStore(int store) {
+        this.store = store;
+    }
+
     public void setOrderedNum(int ordered_num) {
         this.ordered_num = ordered_num;
     }
@@ -38,12 +41,8 @@ public class FoodItem {
         this.unordered_num = unordered_num;
     }
 
-    public void setOrderedNote(String note) {
-        this.ordered_note = note;
-    }
-
-    public void setUnorderedNote(String note) {
-        this.unordered_note = note;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getName() {
@@ -54,6 +53,18 @@ public class FoodItem {
         return price;
     }
 
+    public int getImage() {
+        return image;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public int getStore() {
+        return store;
+    }
+
     public int getOrderedNum() {
         return ordered_num;
     }
@@ -62,11 +73,8 @@ public class FoodItem {
         return unordered_num;
     }
 
-    public String getOrderedNote() {
-        return ordered_note;
+    public String getNote() {
+        return note;
     }
 
-    public String getUnorderedNote() {
-        return unordered_note;
-    }
 }

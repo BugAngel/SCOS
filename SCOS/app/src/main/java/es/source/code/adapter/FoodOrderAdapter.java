@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import es.source.code.activity.R;
-import es.source.code.model.DishesInformation;
 import es.source.code.model.FoodItem;
 
 public class FoodOrderAdapter extends BaseAdapter {
@@ -46,11 +45,11 @@ public class FoodOrderAdapter extends BaseAdapter {
         if(convertView ==null) {
             vh = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.food_order_item, null);
-            vh.food_name = (TextView) convertView.findViewById(R.id.food_name);
-            vh.food_price=(TextView) convertView.findViewById(R.id.food_price);
-            vh.food_num=(TextView) convertView.findViewById(R.id.food_num);
-            vh.food_note=(TextView) convertView.findViewById(R.id.food_note);
-            vh.btn = (Button) convertView.findViewById(R.id.food_flag);
+            vh.food_name = convertView.findViewById(R.id.food_name);
+            vh.food_price=convertView.findViewById(R.id.food_price);
+            vh.food_num=convertView.findViewById(R.id.food_num);
+            vh.food_note=convertView.findViewById(R.id.food_note);
+            vh.btn = convertView.findViewById(R.id.food_flag);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
@@ -59,16 +58,16 @@ public class FoodOrderAdapter extends BaseAdapter {
         FoodItem foodItem=(FoodItem)fList.get(position);
         if(fragment==0){ //已点菜
                 vh.food_name.setText(foodItem.getName());
-                vh.food_price.setText(String.valueOf(foodItem.getPrice())+"元");
+                vh.food_price.setText(context.getString(R.string.price, foodItem.getPrice()));
                 vh.food_num.setText(String.valueOf(foodItem.getOrderedNum()));
-                vh.food_note.setText(foodItem.getOrderedNote());
+                vh.food_note.setText(foodItem.getNote());
                 vh.btn.setVisibility(View.INVISIBLE);
         }else
         {
                 vh.food_name.setText(foodItem.getName());
-                vh.food_price.setText(String.valueOf(foodItem.getPrice())+"元");
+                vh.food_price.setText(context.getString(R.string.price, foodItem.getPrice()));
                 vh.food_num.setText(String.valueOf(foodItem.getUnorderedNum()));
-                vh.food_note.setText(foodItem.getUnorderedNote());
+                vh.food_note.setText(foodItem.getNote());
         }
         return convertView;
     }

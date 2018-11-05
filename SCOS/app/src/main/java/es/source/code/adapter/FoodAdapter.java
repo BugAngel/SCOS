@@ -1,9 +1,7 @@
 package es.source.code.adapter;
 
-import android.content.Intent;
 import android.widget.BaseAdapter;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,31 +11,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import es.source.code.activity.LoginOrRegister;
-import es.source.code.activity.MainScreen;
+import es.source.code.activity.FoodView;
 import es.source.code.activity.R;
-import es.source.code.model.DishesInformation;
 import es.source.code.model.FoodItem;
+import es.source.code.utils.Global;
 
 
 public class FoodAdapter extends BaseAdapter {
-    DishesInformation dishesInformation=DishesInformation.getInstance();
-    private String [][] dishes_name=dishesInformation.getDishes_name();
-    private double[][] dishes_price=dishesInformation.getDishes_price();
 
     private ArrayList fList;
     private Context context;
     private ViewHolder vh; // 全局的ViewHolder引用
-    private int fragment;
+    private FoodView activity;
 
-    public FoodAdapter(Context context, ArrayList list,int fragment) {
+    public FoodAdapter(Context context, ArrayList list) {
         super();
         this.context = context;
         this.fList=list;
-        this.fragment=fragment;
     }
 
     @Override
@@ -60,15 +51,19 @@ public class FoodAdapter extends BaseAdapter {
         if(convertView ==null) {
             vh = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.food_item, null);
-            vh.food_name = (TextView) convertView.findViewById(R.id.food_name);
-            vh.food_price=(TextView) convertView.findViewById(R.id.food_price);
-            vh.btn = (Button) convertView.findViewById(R.id.food_flag);
+            vh.food_name = convertView.findViewById(R.id.food_name);
+            vh.food_price=convertView.findViewById(R.id.food_price);
+            vh.food_store=convertView.findViewById(R.id.food_store);
+            vh.btn = convertView.findViewById(R.id.food_flag);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
-        vh.food_name.setText(dishes_name[fragment][position]);
-        vh.food_price.setText(String.valueOf(dishes_price[fragment][position]));
+
+        FoodItem foodItem = (FoodItem)fList.get(position);
+        vh.food_name.setText(foodItem.getName());
+        vh.food_price.setText(context.getString(R.string.price, foodItem.getPrice()));
+        vh.food_store.setText(String.valueOf(foodItem.getStore()));
 
         /*
          * 此处是重点，ListVeiw的Item里有Button,我在BaseAdapter里写了Button的监听，
@@ -83,6 +78,7 @@ public class FoodAdapter extends BaseAdapter {
     class ViewHolder {
         TextView food_name;
         TextView food_price;
+        TextView food_store;
         Button btn;
     }
 
@@ -108,7 +104,16 @@ public class FoodAdapter extends BaseAdapter {
             btn.setTextColor(context.getResources().getColor(R.color.white));
             btn.setBackgroundColor(context.getResources().getColor(R.color.red));
             btn.setVisibility(View.VISIBLE);
-            dishesInformation.setUnordered_dishes_num(1,fragment,pos);
+            foodItem.setUnorderedNum(1);
+            for(int i = 0;i < Global.foodInformation.size(); i ++){
+                FoodItem temp=Global.foodInformation.get(i);
+                if(temp.getName().equals(foodItem.getName())){
+                    Global.foodInformation.set(i,foodItem);
+                    break;
+                }
+            }
+
+            activity.updateFragment();
         }
     }
 

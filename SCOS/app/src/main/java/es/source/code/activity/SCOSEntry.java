@@ -3,7 +3,12 @@ package es.source.code.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
+
+import es.source.code.service.UpdateService;
+import es.source.code.utils.FoodInformation;
+import es.source.code.utils.Global;
 
 public class SCOSEntry extends Activity {
 
@@ -13,6 +18,8 @@ public class SCOSEntry extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry);
+        FoodInformation foodInformation=new FoodInformation();
+        foodInformation.foodItemInit();
     }
 
     /**

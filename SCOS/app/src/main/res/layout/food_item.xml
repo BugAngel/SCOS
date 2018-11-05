@@ -11,17 +11,26 @@
         android:id="@+id/food_name"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_centerVertical="true"
-        android:textSize="20sp"/>
+        android:textSize="12sp"/>
 
     <TextView
         android:id="@+id/food_price"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:textSize="20sp"/>
+        android:textSize="12sp"
+        android:layout_toEndOf="@id/food_name"/>
+
+    <TextView
+        android:id="@+id/food_store"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textSize="12sp"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        android:layout_toStartOf="@id/food_flag" />
 
     <Button
         android:id="@+id/food_flag"
