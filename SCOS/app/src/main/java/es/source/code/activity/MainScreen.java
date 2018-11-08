@@ -21,6 +21,7 @@ import es.source.code.adapter.MainScreenAdapter;
 import es.source.code.model.GridItem;
 import es.source.code.model.User;
 import es.source.code.service.UpdateService;
+import es.source.code.utils.FoodInformation;
 
 import static java.security.AccessController.getContext;
 
@@ -54,6 +55,9 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
         /*默认全部显示*/
         mGridView = findViewById(R.id.grid_view);
         showAll();
+
+        FoodInformation foodInformation=new FoodInformation();
+        foodInformation.foodItemInit();
 
         /*intent判断入口界面传值*/
         nameString = intent.getStringExtra("FromEntry");
@@ -140,7 +144,7 @@ public class MainScreen extends Activity implements AdapterView.OnItemClickListe
         // 根据元素位置获取对应的值
         GridItem item = new GridItem(mainscreen_image[position],mainscreen_name[position]);
 
-        Toast.makeText(this.getApplicationContext(), "You Select "+item.getName(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this.getApplicationContext(), "You Select "+item.getName(), Toast.LENGTH_SHORT).show();
 
         if (item.getName().equals(mainscreen_name[0])) {
             Intent intent=new Intent(MainScreen.this, LoginOrRegister.class);

@@ -65,6 +65,13 @@ public class FoodAdapter extends BaseAdapter {
         vh.food_price.setText(context.getString(R.string.price, foodItem.getPrice()));
         vh.food_store.setText(String.valueOf(foodItem.getStore()));
 
+        if(foodItem.getUnorderedNum()==1){
+            vh.btn.setText("退点");
+            vh.btn.setBackgroundColor(context.getResources().getColor(R.color.red));
+        } else if(foodItem.getUnorderedNum()==0){
+            vh.btn.setText("点菜");
+            vh.btn.setBackgroundColor(context.getResources().getColor(R.color.darkgreen));
+        }
         /*
          * 此处是重点，ListVeiw的Item里有Button,我在BaseAdapter里写了Button的监听，
          * 但是我每次点击Button,都是最后一个Item的Button响应事件，网上查说是因为传进去
@@ -95,16 +102,20 @@ public class FoodAdapter extends BaseAdapter {
         @Override
         public void onClick(View v) {
             FoodItem foodItem = (FoodItem)fList.get(pos);
-            Toast.makeText(context, foodItem.getName(), Toast.LENGTH_SHORT).show();
             // 此处可以由View强转来取得Button按钮
             Button btn = (Button) v;
 
             // 置为退点
-            btn.setText("退点");
-            btn.setTextColor(context.getResources().getColor(R.color.white));
-            btn.setBackgroundColor(context.getResources().getColor(R.color.red));
-            btn.setVisibility(View.VISIBLE);
-            foodItem.setUnorderedNum(1);
+            if(btn.getText()=="退点"){
+                btn.setText("点菜");
+                btn.setBackgroundColor(context.getResources().getColor(R.color.darkgreen));
+                foodItem.setUnorderedNum(0);
+            }else{
+                btn.setText("退点");
+                btn.setBackgroundColor(context.getResources().getColor(R.color.red));
+                foodItem.setUnorderedNum(1);
+            }
+
             for(int i = 0;i < Global.foodInformation.size(); i ++){
                 FoodItem temp=Global.foodInformation.get(i);
                 if(temp.getName().equals(foodItem.getName())){
@@ -113,7 +124,7 @@ public class FoodAdapter extends BaseAdapter {
                 }
             }
 
-            activity.updateFragment();
+//            activity.updateFragment();
         }
     }
 

@@ -18,8 +18,6 @@ public class SCOSEntry extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry);
-        FoodInformation foodInformation=new FoodInformation();
-        foodInformation.foodItemInit();
     }
 
     /**

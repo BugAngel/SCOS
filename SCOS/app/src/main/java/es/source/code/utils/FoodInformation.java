@@ -21,40 +21,40 @@ public class FoodInformation {
 
         FoodItem foodItem;
 
-        foodItem=new FoodItem("酱牛肉",15.3,R.drawable.jiangniurou,FoodSort.COLD_FOOD,0,0,0,"");
+        foodItem=new FoodItem("酱牛肉",15.3,R.drawable.jiangniurou,FoodSort.COLD_FOOD,1,0,0,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("酸辣凤爪",20.5,R.drawable.suanlafengzhao,FoodSort.COLD_FOOD,0,0,0,"");
+        foodItem=new FoodItem("酸辣凤爪",20.5,R.drawable.suanlafengzhao,FoodSort.COLD_FOOD,1,0,0,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("老醋木耳",10.2,R.drawable.laocumuer,FoodSort.COLD_FOOD,0,0,5,"");
+        foodItem=new FoodItem("老醋木耳",10.2,R.drawable.laocumuer,FoodSort.COLD_FOOD,1,0,1,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("鱼香肉丝",25,R.drawable.yuxiangrousi,FoodSort.HOT_FOOD,0,1,0,"");
+        foodItem=new FoodItem("鱼香肉丝",25,R.drawable.yuxiangrousi,FoodSort.HOT_FOOD,1,1,0,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("冒菜",28,R.drawable.maocai,FoodSort.HOT_FOOD,0,0,0,"多放辣");
+        foodItem=new FoodItem("冒菜",28,R.drawable.maocai,FoodSort.HOT_FOOD,1,0,0,"多放辣");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("牛肉干锅",60,R.drawable.niurouganguo,FoodSort.HOT_FOOD,0,0,0,"");
+        foodItem=new FoodItem("牛肉干锅",60,R.drawable.niurouganguo,FoodSort.HOT_FOOD,1,0,0,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("螃蟹",40,R.drawable.pangxie,FoodSort.SEA_FOOD,0,0,0,"");
+        foodItem=new FoodItem("螃蟹",40,R.drawable.pangxie,FoodSort.SEA_FOOD,1,0,0,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("鲍鱼",200,R.drawable.baoyu,FoodSort.SEA_FOOD,0,0,0,"鲜");
+        foodItem=new FoodItem("鲍鱼",200,R.drawable.baoyu,FoodSort.SEA_FOOD,1,0,0,"鲜");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("龙虾",300,R.drawable.longxia,FoodSort.SEA_FOOD,0,0,0,"");
+        foodItem=new FoodItem("龙虾",300,R.drawable.longxia,FoodSort.SEA_FOOD,1,0,0,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("茅台",500,R.drawable.maotai,FoodSort.DRINKS,0,0,0,"");
+        foodItem=new FoodItem("茅台",500,R.drawable.maotai,FoodSort.DRINKS,1,0,0,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("五粮液",400,R.drawable.wuliangye,FoodSort.DRINKS,0,0,0,"");
+        foodItem=new FoodItem("五粮液",400,R.drawable.wuliangye,FoodSort.DRINKS,1,0,0,"");
         Global.foodInformation.add(foodItem);
 
-        foodItem=new FoodItem("天之蓝",300,R.drawable.tianzhilan,FoodSort.DRINKS,0,0,0,"");
+        foodItem=new FoodItem("天之蓝",300,R.drawable.tianzhilan,FoodSort.DRINKS,1,0,0,"");
         Global.foodInformation.add(foodItem);
 
         //排序
@@ -101,12 +101,24 @@ public class FoodInformation {
         return  sum;
     }
 
-    //提交订单，将已提交订单菜品总数记为0
-    public void submitOrders(){
+    //结账
+    public void checkOut(){
         for(int i=0;i<Global.foodInformation.size();i++){
             FoodItem foodItem=Global.foodInformation.get(i);
             if(foodItem.getOrderedNum()!=0){
                 foodItem.setOrderedNum(0);
+                Global.foodInformation.set(i, foodItem);
+            }
+        }
+    }
+
+    //提交订单，将待结账菜品总数记为1，未下单菜记为0
+    public void submitOrders(){
+        for(int i=0;i<Global.foodInformation.size();i++){
+            FoodItem foodItem=Global.foodInformation.get(i);
+            if(foodItem.getUnorderedNum()!=0){
+                foodItem.setUnorderedNum(0);
+                foodItem.setOrderedNum(1);
                 Global.foodInformation.set(i, foodItem);
             }
         }

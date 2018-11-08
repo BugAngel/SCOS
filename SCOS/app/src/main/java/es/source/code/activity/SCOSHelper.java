@@ -1,19 +1,29 @@
 package es.source.code.activity;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 import android.os.Handler;
 
@@ -23,6 +33,8 @@ import java.util.List;
 import es.source.code.adapter.SCOSHelperAdapter;
 import es.source.code.mail.SendMailUtil;
 import es.source.code.model.GridItem;
+import es.source.code.service.UpdateService;
+import es.source.code.utils.Global;
 
 public class SCOSHelper extends AppCompatActivity implements AdapterView.OnItemClickListener{
     private String[] scos_helper_name= new String[]{
@@ -131,8 +143,47 @@ public class SCOSHelper extends AppCompatActivity implements AdapterView.OnItemC
                 handler.sendEmptyMessage(1);
                 break;
             case 3: //用户使用协议
+                Toast.makeText(this, "此功能暂未开放，不如看看有没有什么新菜", Toast.LENGTH_SHORT).show();
+                Intent intentService = new Intent(this, UpdateService.class);
+                intentService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  //避免重复打开
+                this.startService(intentService);
                 break;
                 case 4: //关于系统
+                    Toast.makeText(this, "此功能暂未开放，不如看看有没有什么新菜", Toast.LENGTH_SHORT).show();
+                    int FLAG_CLEAN = 101;
+                     int NOTIFICATION_ID = 5445;
+                    Notification notification = new Notification();
+                    notification.icon = R.mipmap.ic_launcher;
+                    notification.tickerText = "新菜到了";
+                    notification.flags = Notification.FLAG_AUTO_CANCEL;
+                    notification.when = System.currentTimeMillis();
+
+                    Intent p_intent = new Intent(this, MainScreen.class);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, p_intent, PendingIntent
+                            .FLAG_CANCEL_CURRENT);
+
+                    Intent serviceIntent = new Intent(Global.CLOSE_NOTIFICATION);
+                    serviceIntent.putExtra(Global.NOTIFICATION_ID, NOTIFICATION_ID);
+                    PendingIntent closeIntent = PendingIntent.getBroadcast(this, FLAG_CLEAN, serviceIntent, PendingIntent
+                            .FLAG_UPDATE_CURRENT);
+
+                    RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification);
+                    remoteViews.setTextViewText(R.id.tv,getString(R.string.notification, Global.URL_FOOD_AMOUNT));
+                    remoteViews.setOnClickPendingIntent(R.id.btn,closeIntent);
+                    notification.contentView = remoteViews;
+                    notification.contentIntent = pendingIntent;
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(NOTIFICATION_ID,notification);
+
+                    Uri ringtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    MediaPlayer mediaPlayer = MediaPlayer.create(this, ringtone);
+                    mediaPlayer.start();
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            mp.release();
+                        }
+                    });
                 break;
                 default:
                     break;

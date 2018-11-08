@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import es.source.code.activity.R;
 import es.source.code.model.FoodItem;
+import es.source.code.utils.Global;
 
 public class FoodOrderAdapter extends BaseAdapter {
     private ArrayList fList;
@@ -56,18 +57,18 @@ public class FoodOrderAdapter extends BaseAdapter {
         }
 
         FoodItem foodItem=(FoodItem)fList.get(position);
-        if(fragment==0){ //已点菜
-                vh.food_name.setText(foodItem.getName());
-                vh.food_price.setText(context.getString(R.string.price, foodItem.getPrice()));
-                vh.food_num.setText(String.valueOf(foodItem.getOrderedNum()));
-                vh.food_note.setText(foodItem.getNote());
-                vh.btn.setVisibility(View.INVISIBLE);
-        }else
-        {
-                vh.food_name.setText(foodItem.getName());
-                vh.food_price.setText(context.getString(R.string.price, foodItem.getPrice()));
-                vh.food_num.setText(String.valueOf(foodItem.getUnorderedNum()));
-                vh.food_note.setText(foodItem.getNote());
+        if (fragment == 0) { //已点菜
+            vh.food_name.setText(foodItem.getName());
+            vh.food_price.setText(context.getString(R.string.price, foodItem.getPrice()));
+            vh.food_num.setText(String.valueOf(foodItem.getOrderedNum()));
+            vh.food_note.setText(foodItem.getNote());
+            vh.btn.setVisibility(View.INVISIBLE);
+        } else {
+            vh.food_name.setText(foodItem.getName());
+            vh.food_price.setText(context.getString(R.string.price, foodItem.getPrice()));
+            vh.food_num.setText(String.valueOf(foodItem.getUnorderedNum()));
+            vh.food_note.setText(foodItem.getNote());
+            vh.btn.setOnClickListener(new MyListener(position));
         }
         return convertView;
     }
@@ -78,5 +79,35 @@ public class FoodOrderAdapter extends BaseAdapter {
         TextView food_num;//数量
         TextView food_note;//备注
         Button btn;//退点按钮
+    }
+
+    /*
+     * 外部监听接口
+     */
+    class MyListener implements View.OnClickListener {
+        int pos;
+
+        public MyListener(int pos) {
+            this.pos = pos;
+        }
+
+        @Override
+        public void onClick(View v) {
+            FoodItem foodItem= Global.foodInformation.get(pos);
+            // 此处可以由View强转来取得Button按钮
+            Button btn = (Button) v;
+            foodItem.setUnorderedNum(0);
+            foodItem.setOrderedNum(1);
+            btn.setClickable(false);
+            btn.setText("已退点");
+            btn.setBackgroundColor(context.getResources().getColor(R.color.gray));
+
+            for (int i = 0; i < Global.foodInformation.size(); i++) {
+                if (Global.foodInformation.get(i).getName().equals(foodItem.getName())) {
+                    Global.foodInformation.set(i,foodItem);
+                    break;
+                }
+            }
+        }
     }
 }

@@ -5,28 +5,41 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.source.code.model.LoginParam;
+import es.source.code.model.ResultJson;
 import es.source.code.model.User;
+import es.source.code.utils.Global;
+import es.source.code.utils.URLUtil;
 
 public class LoginOrRegister extends Activity {
 
     private int progress = 0;
     private Timer timer;
     private TimerTask timerTask;
-    private String username;
-    private String passwd;
     private Button login_button = null;
     private Button register_button = null;
-    private EditText username_edit = null;
+    private EditText username_edit= null;
+    private EditText passwd_edit=null;
+    private String username=null;
+    private String passwd=null;
+    private boolean URLFlag=false;
+
     //获取sharedPreferences对象
     SharedPreferences sharedPreferences = null;
     //获取editor对象
@@ -41,6 +54,7 @@ public class LoginOrRegister extends Activity {
         login_button = findViewById(R.id.login_button);
         register_button = findViewById(R.id.register_button);
         username_edit = findViewById(R.id.username_edit);
+        passwd_edit=findViewById(R.id.passwd_edit);
         sharedPreferences = getSharedPreferences("WRSCOS", Context.MODE_PRIVATE);
 
         // SharedPreferences 中是否有用户名
@@ -56,35 +70,50 @@ public class LoginOrRegister extends Activity {
 
     //点击登录
     public void onLogin(View v){
+        Log.d(Global.TAG.SIX_TAG,"点击登录");
         //    弹出要给ProgressDialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("提示信息");
         progressDialog.setMessage("正在登录中，请稍后......");
-        //    设置setCancelable(false); 表示我们不能取消这个弹出框，等下载完成之后再让弹出框消失
+//            设置setCancelable(false); 表示我们不能取消这个弹出框，等下载完成之后再让弹出框消失
         progressDialog.setCancelable(false);
-        //    设置ProgressDialog样式为水平的样式
+//            设置ProgressDialog样式为水平的样式
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
 
-        startTimer();
+        username=username_edit.getText().toString();
+        passwd=passwd_edit.getText().toString();
+        if(checkUsernamePassword(username,passwd)){
+            startTimer();
+            HttpLoginOperate httpURLOperate=new HttpLoginOperate();
+            httpURLOperate.start();//启动网络线程
+            while(timer!=null){
+                if(URLFlag){
+                    break;
+                }
+            }
+            Log.d(Global.TAG.SIX_TAG,"通过计时器");
+            if(URLFlag) {
+                Log.d(Global.TAG.SIX_TAG,"网络正常");
+                editor=sharedPreferences.edit();
+                //存储键值对
+                editor.putString("userName", username);
+                editor.putInt("loginState", 1);
+                editor.apply();//提交修改
 
-        if(checkUsernamePassword()){
-            editor=sharedPreferences.edit();
-            //存储键值对
-            editor.putString("userName", username_edit.getText().toString());
-            editor.putInt("loginState", 1);
-            editor.apply();//提交修改
+                User loginUser = new User();
+                loginUser.setUserName(username);
+                loginUser.setPassword(passwd);
+                loginUser.setOldUser(true);
 
-            User loginUser=new User();
-            loginUser.setUserName(username);
-            loginUser.setPassword(passwd);
-            loginUser.setOldUser(true);
-
-            String data ="LoginSuccess";
-            Intent intent=new Intent(LoginOrRegister.this, MainScreen.class);
-            intent.putExtra("LoginSuccess",data);
-            intent.putExtra("user",loginUser);
-            startActivity(intent);
+                String data = "LoginSuccess";
+                Intent intent = new Intent(LoginOrRegister.this, MainScreen.class);
+                intent.putExtra("LoginSuccess", data);
+                intent.putExtra("user", loginUser);
+                startActivity(intent);
+            }else{
+                Toast.makeText(this, "网络异常，无法登录", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -138,44 +167,119 @@ public class LoginOrRegister extends Activity {
     }
 
     public void onRegister(View v){
-        if(checkUsernamePassword()){
-            User loginUser=new User();
-            loginUser.setUserName(username);
-            loginUser.setPassword(passwd);
-            loginUser.setOldUser(false);
+        //    弹出要给ProgressDialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("提示信息");
+        progressDialog.setMessage("正在登录中，请稍后......");
+//            设置setCancelable(false); 表示我们不能取消这个弹出框，等下载完成之后再让弹出框消失
+        progressDialog.setCancelable(false);
+//            设置ProgressDialog样式为水平的样式
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.show();
 
-            if(checkUsernamePassword()){
-                editor=sharedPreferences.edit();
-                editor.putString("userName", username_edit.getText().toString());
+        username=username_edit.getText().toString();
+        passwd=passwd_edit.getText().toString();
+        if(checkUsernamePassword(username,passwd)){
+            startTimer();
+            HttpLoginOperate httpURLOperate=new HttpLoginOperate();
+            httpURLOperate.start();//启动网络线程
+            while(timer!=null){
+                if(URLFlag){
+                    break;
+                }
+            }
+            if(URLFlag) {
+                User loginUser = new User();
+                loginUser.setUserName(username);
+                loginUser.setPassword(passwd);
+                loginUser.setOldUser(false);
+
+                editor = sharedPreferences.edit();
+                editor.putString("userName", username);
                 editor.putInt("loginState", 1);
                 editor.apply();//提交修改
-            }
 
-            String data ="RegisterSuccess";
-            Intent intent=new Intent(LoginOrRegister.this, MainScreen.class);
-            intent.putExtra("RegisterSuccess",data);
-            intent.putExtra("user",loginUser);
-            startActivity(intent);
+                String data = "RegisterSuccess";
+                Intent intent = new Intent(LoginOrRegister.this, MainScreen.class);
+                intent.putExtra("RegisterSuccess", data);
+                intent.putExtra("user", loginUser);
+                startActivity(intent);
+            }else{
+                Toast.makeText(this, "网络异常，无法登录", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     //验证登录名和登录密码是否符合规则
-    private boolean checkUsernamePassword(){
-        EditText username_edit;
-        EditText passwd_edit;
-
-        username_edit= findViewById(R.id.username_edit);
-        passwd_edit=findViewById(R.id.passwd_edit);
-        username=username_edit.getText().toString();
-        passwd=passwd_edit.getText().toString();
+    private boolean checkUsernamePassword(String p_username,String p_passwd){
         String regex = "[A-Za-z0-9]+";
-        if(username.matches(regex) && passwd.matches(regex)){
+        if(p_username.matches(regex) && p_passwd.matches(regex)){
             return true;
-        }else if(!username.matches(regex)){
+        }else if(!p_username.matches(regex)){
             username_edit.setError("输入内容不符合规则");
         }else{
             passwd_edit.setError("输入内容不符合规则");
         }
         return false;
+    }
+
+    class HttpLoginOperate extends Thread{
+        public void run(){
+            try {
+                LoginParam loginParam=new LoginParam(username,passwd);
+                String loginParamString=new Gson().toJson(loginParam);
+                //请求的参数转换为byte数组
+                byte[] postData=loginParamString.getBytes("utf8");
+
+                URL url = new URL(Global.URL.BASE_URL+Global.URL.Login_URL);
+//                URL url = new URL("http://www.baidu.com");
+                HttpURLConnection connection=(HttpURLConnection) url.openConnection();
+                //设置连接超时时间
+                connection.setConnectTimeout(5000);
+                //设置从主机读取数据超时时间
+                connection.setReadTimeout(5000);
+                //POST请求设置允许输出
+                connection.setDoOutput(true);
+                //REQUEST请求设置允许输出
+                connection.setDoInput(true);
+                //POST请求不能使用缓存
+                connection.setUseCaches(false);
+                //设置为POST请求
+                connection.setRequestMethod("POST");
+                //设置本次连接是否自动处理重定向
+                connection.setInstanceFollowRedirects(true);
+                //配置请求Content-Type
+                connection.setRequestProperty("Content-Type","application/json");
+
+                DataOutputStream out=new DataOutputStream(connection.getOutputStream());
+                out.write(postData);
+                out.flush();
+                out.close();
+
+                // 判断请求是否成功
+                if (connection.getResponseCode() == 200) {
+                    Log.d(Global.TAG.SIX_TAG, "请求成功");
+                    // 获取返回的数据
+                    String resultString= URLUtil.streamToString(connection.getInputStream());
+                    Log.d(Global.TAG.SIX_TAG, "返回数据为："+resultString);
+                    ResultJson resultJson=new Gson().fromJson(resultString,ResultJson.class);
+                    if(resultJson.getRESULT_CODE()==1){
+                        URLFlag=true;
+                        Log.d(Global.TAG.SIX_TAG, "获取返回数据成功");
+                    }else{
+                        URLFlag=false;
+                        Log.d(Global.TAG.SIX_TAG, "获得的结果码为0");
+                    }
+                } else {
+                    Log.d(Global.TAG.SIX_TAG, "请求失败");
+                }
+                // 关闭连接
+                connection.disconnect();
+
+            }catch (IOException e){
+                Log.d(Global.TAG.SIX_TAG,"URL发送失败");
+//                Toast.makeText(getApplicationContext(), "网络异常", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

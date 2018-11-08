@@ -1,5 +1,6 @@
 package es.source.code.br;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +15,19 @@ public class DeviceStartedListener extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         final String ACTION_BOOT = "android.intent.action.BOOT_COMPLETED";
+        Log.d(Global.TAG.SIX_TAG,intent.getAction());
         if (ACTION_BOOT.equals(intent.getAction()))
         {
             Intent intentService = new Intent(context, UpdateService.class);
-            intentService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intentService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);  //避免重复打开
             context.startService(intentService);
-            Log.d(Global.TAG.INTENT_SERVICE_TAG,"广播已打开");
+        }else if (Global.CLOSE_NOTIFICATION.equals(intent.getAction())) {
+            Log.d(Global.TAG.SIX_TAG,"进入第二个");
+            NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context
+                    .NOTIFICATION_SERVICE);
+            notifyManager.cancel(intent.getIntExtra(Global.NOTIFICATION_ID, 0));
+            Log.d(Global.TAG.SIX_TAG,Global.NOTIFICATION_ID);
+            Log.d(Global.TAG.SIX_TAG,String.valueOf(intent.getIntExtra(Global.NOTIFICATION_ID, 0)));
         }
     }
 }

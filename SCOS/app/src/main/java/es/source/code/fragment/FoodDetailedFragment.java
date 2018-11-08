@@ -9,8 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.HashMap;
+import android.widget.Toast;
 
 import es.source.code.activity.R;
 import es.source.code.model.FoodItem;
@@ -48,6 +47,7 @@ public class FoodDetailedFragment extends Fragment {
             vh.btn.setBackgroundColor(getContext().getResources().getColor(R.color.darkgreen));
         }
 
+        vh.btn.setOnClickListener(new MyListener(position));
         convertView.setTag(vh);
 
         return convertView;
@@ -59,5 +59,42 @@ public class FoodDetailedFragment extends Fragment {
         TextView food_price;//菜价
         EditText food_note;//备注
         Button btn;//按钮
+    }
+
+    /*
+     * 外部监听接口
+     */
+    class MyListener implements View.OnClickListener {
+        int pos;
+
+        public MyListener(int pos) {
+            this.pos = pos;
+        }
+
+        @Override
+        public void onClick(View v) {
+            FoodItem foodItem=Global.foodInformation.get(position);
+            // 此处可以由View强转来取得Button按钮
+            Button btn = (Button) v;
+            if(btn.getText()=="退点"){
+                btn.setText("点菜");
+                btn.setBackgroundColor(getContext().getResources().getColor(R.color.darkgreen));
+                foodItem.setUnorderedNum(0);
+            }else{
+                btn.setText("退点");
+                btn.setBackgroundColor(getContext().getResources().getColor(R.color.red));
+                foodItem.setUnorderedNum(1);
+                if(!vh.food_note.getText().toString().equals("备注")) {
+                    foodItem.setNote(vh.food_note.getText().toString());
+                }
+            }
+
+            for (int i = 0; i < Global.foodInformation.size(); i++) {
+                if (Global.foodInformation.get(i).getName().equals(foodItem.getName())) {
+                    Global.foodInformation.set(i,foodItem);
+                    break;
+                }
+            }
+        }
     }
 }

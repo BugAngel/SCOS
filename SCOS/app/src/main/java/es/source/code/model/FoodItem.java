@@ -10,6 +10,18 @@ public class FoodItem {
     private int unordered_num=0;//未点数量
     private String note=null;//备注
 
+    public FoodItem(){
+
+    }
+
+	public FoodItem(String name, double price, int image, int sort, int store) {
+		this.name = name;
+		this.price = price;
+		this.image = image;
+		this.sort = sort;
+		this.store = store;
+	}
+	
     public FoodItem(String name, double price, int image, int sort, int store, int ordered_num, int unordered_num, String note) {
         this.name = name;
         this.price = price;
@@ -27,6 +39,10 @@ public class FoodItem {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 
     public void setStore(int store) {
